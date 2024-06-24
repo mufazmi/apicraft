@@ -1,6 +1,6 @@
 {
   "name": "apicraft",
-  "version": "1.0.0",
+  "version": "1.0.9",
   "description": "A CLI tool to generate API files and folder structure",
   "main": "bin/index.js",
   "bin": {
@@ -12,7 +12,9 @@
   "keywords": [
     "cli",
     "api",
-    "generator"
+    "generator",
+    "mufazmi",
+    "UmairFarooqui"
   ],
   "author": "Umair Farooqui",
   "license": "ISC",
