@@ -102,9 +102,9 @@ const initProject = () => {
     });
 
     createInitialFiles();
-    // createEnvFiles();
-    // updatePackageJson();
-    // installDependencies();
+    createEnvFiles();
+    updatePackageJson();
+    installDependencies();
 };
 
 const main = () => {
