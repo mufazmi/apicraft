@@ -1,4 +1,4 @@
-  <img src="https://raw.githubusercontent.com/mufazmi/apicraft/master/apicraft.png" style="min-width: 100%;" alt="Appreciation Letter - Drexel University">
+  <img src="https://raw.githubusercontent.com/mufazmi/apicraft/master/apicraft-mufazmi.png" style="min-width: 100%;" alt="Appreciation Letter - Drexel University">
 
 # API Craft CLI Tool
 
