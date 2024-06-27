@@ -1,5 +1,5 @@
-
 # API Craft CLI Tool
+
 API Craft CLI Tool is a command-line utility designed to streamline the setup of Node.js API projects, ensuring a well-structured and organized codebase. It automates the creation of essential files and folders, enhances code readability, and improves development productivity.
 
 ## Features
@@ -21,7 +21,7 @@ Before using the API Craft CLI Tool, ensure you have the following installed:
 You can install the API Craft CLI Tool globally using npm:
 
 ```bash
-npm install -g api-craft
+npm install -g apicraft
 ```
 
 ## Usage
@@ -31,39 +31,51 @@ npm install -g api-craft
 To initialize a new project with API Craft:
 
 ```bash
-npx api-craft init
+npx apicraft init
 ```
 
 This command sets up the following structure in your project directory:
 
-- `configs/`: Configuration files like database and email configurations.
-- `controllers/`: Controllers to handle API endpoints.
-- `dtos/`: Data Transfer Objects for input/output validation.
-- `interfaces/`: TypeScript interfaces for defining data structures.
-- `mails/`: Templates and services for email handling.
-- `middlewares/`: Middleware functions like authentication and error handling.
-- `models/`: Mongoose models for MongoDB schema definitions.
-- `routes/`: Express routes to define API endpoints.
-- `services/`: Business logic services for each module.
-- `utils/`: Utility functions and constants.
-- `validations/`: Joi validation schemas.
+```
+project-root/
+├── src/
+│   ├── configs/
+│   ├── controllers/
+│   ├── dtos/
+│   ├── interfaces/
+│   ├── mails/
+│   ├── middlewares/
+│   ├── models/
+│   ├── routes/
+│   ├── services/
+│   ├── utils/
+│   └── validations/
+├── package.json
+└── README.md
+```
 
 ### Creating a New Module
 
 To create a new module in your project:
 
 ```bash
-npx api-craft create <moduleName>
+npx apicraft create <moduleName>
 ```
 
-Replace `<moduleName>` with the name of your module. This command generates:
+Replace `<moduleName>` with the name of your module. For example:
 
-- `controllers/<moduleName>-controller.ts`: Controller methods for handling API requests.
-- `dtos/<moduleName>-dto.ts`: DTOs for validating input/output data.
-- `models/<moduleName>-model.ts`: Mongoose model schema for MongoDB.
-- `routes/<moduleName>-route.ts`: Express routes for module-specific endpoints.
-- `services/<moduleName>-service.ts`: Business logic services for the module.
-- `validations/<moduleName>-validation.ts`: Validation schemas for input data.
+```bash
+npx apicraft create user-activity
+```
+
+This command generates:
+
+- `controllers/user-activity-controller.ts`: Controller methods for handling API requests.
+- `dtos/user-activity-dto.ts`: DTOs for validating input/output data.
+- `models/user-activity-model.ts`: Mongoose model schema for MongoDB.
+- `routes/user-activity-route.ts`: Express routes for module-specific endpoints.
+- `services/user-activity-service.ts`: Business logic services for the module.
+- `validations/user-activity-validation.ts`: Validation schemas for input data.
 
 ### Global Error Handling
 
@@ -91,9 +103,6 @@ project-root/
 │   ├── services/
 │   ├── utils/
 │   └── validations/
-├── templates/
-├── utils/
-├── bin/
 ├── package.json
 └── README.md
 ```
