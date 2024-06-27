@@ -24,7 +24,8 @@
     "utils/constants.ts",
     "interfaces/request-interface.ts",
     "interfaces/user-interface.ts",
-    "mails/mail-template.ts"
+    "mails/mail-template.ts",
+    "routes/auth-route.ts"
   ],
   "initialFiles": [
     "configs/init.ts",
