@@ -5,7 +5,6 @@ const path = require('path');
 const process = require('process');
 const pluralize = require('pluralize');
 
-// Templates for each file type
 const CREATE_TEMPLATES = {
     'service': 'services/service.ts',
     'validation': 'validations/validation.ts',
@@ -15,7 +14,6 @@ const CREATE_TEMPLATES = {
     'model': 'models/model.ts',
 };
 
-// Folder paths relative to 'src'
 const FOLDERS = {
     'service': 'services',
     'validation': 'validations',
@@ -49,7 +47,6 @@ const INITIAL_AUTH_FILES = [
     { template: 'mails/mail-template.ts', dest: 'src/templates/mail-template.ts' },
 ];
 
-// Initial files to be created on 'init'
 const INITIAL_FILES = [
     { template: 'configs/db-config.ts', dest: 'src/configs/db-config.ts' },
     { template: 'configs/mail-config.ts', dest: 'src/configs/mail-config.ts' },
@@ -81,14 +78,9 @@ function generateFiles(moduleName) {
         const filePath = path.join('src', folder, fileName);
         const templatePath = path.join(__dirname, '..', 'templates', templateFile);
         let content = fs.readFileSync(templatePath, 'utf8');
-
-        // Replace placeholders in the template content
         content = content.replace(/Base/g, modelName);
         content = content.replace(/base/g, moduleNameLowerCase);
-        // content = content.replace(/ModelName/g, modelName);Z'${modelName}', ${moduleName}Schema, '${pluralModuleName}');`);
         content = content.replace(/collectionName/g, `${pluralModuleName}`);
-
-        // Ensure the folder exists
         fs.mkdirSync(path.join('src', folder), { recursive: true });
 
         createFile(filePath, content);
