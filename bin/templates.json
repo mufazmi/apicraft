@@ -20,11 +20,12 @@
     "dtos/auth-dto.ts",
     "dtos/role-dto.ts",
     "dtos/user-dto.ts",
+    "dtos/company-dto.ts",
     "validations/auth-validation.ts",
     "utils/constants.ts",
     "interfaces/request-interface.ts",
     "interfaces/user-interface.ts",
-    "mails/mail-template.ts",
+    "templates/mail-template.ts",
     "routes/auth-route.ts"
   ],
   "initialFiles": [

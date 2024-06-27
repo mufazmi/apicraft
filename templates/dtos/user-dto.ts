@@ -9,7 +9,7 @@ class UserDto {
     is_staff?: boolean;
     is_admin?: boolean;
 
-    constructor(data: IUser) {
+    constructor(data: any) {
         this.id = data._id;
         this.name = data.name;
         this.email = data.email;

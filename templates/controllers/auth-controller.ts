@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import UserDto from "../dtos/user-dto";
-import { IUser } from "../models/user-model";
+import { IUser, IUserDocument } from "../models/user-model";
 import tokenService from "../services/token-service";
 import userService from "../services/user-service";
 import ErrorHandler from "../utils/error-handler";
@@ -23,16 +23,16 @@ class AuthController {
     const user = await userService.findOne({email:body.email});
     if(user)
       return next(ErrorHandler.forbidden("email","Email already registered"))
-    const response: IUser = await userService.create(body);
+    const response: IUserDocument = await userService.create(body);
     const otp = otpService.generateOtp();
     await otpService.storeOtp(response._id,otp,Constants.OTP_TYPE.EMAIL_VERIFICATION);
-    await mailService.sendMail({type:'verifyEmail',name:response.name,to:response.email,code:otp.toString()});
+    await mailService.sendMail({type:'verifyEmail',name:response.name,to:response.email!,code:otp.toString()});
     return responseSuccess({ res: res, message: Messages.AUTH.REGISTER_SUCCESS, data: response });
 }
 
   login = async (req: Request, res: Response, next: NextFunction) => {
       const body = await authValidation.login.validateAsync(req.body);
-      const user = await userService.findOne({ email: body.email } as IUser);
+      const user = await userService.findOne({ email: body.email } as IUserDocument);
       if (!user)
         return next(ErrorHandler.notFound("email",Messages.USER.NOT_FOUND));
 
@@ -47,10 +47,7 @@ class AuthController {
 
       const data = new AuthDto(user,role);
 
-    //   const address = await companyAddressService.findOne({company:data.role.company_id});
-
-    const address = true;
-
+      const address = true; // other checks flags
 
       if(!address)
           data.has_company_address = false
@@ -73,9 +70,9 @@ class AuthController {
         return next(ErrorHandler.unAuthorized("Refresh Token Not Valid"));
 
     //@ts-ignore
-    const userToken = token as IUser;
+    const userToken = token as IUserDocument;
 
-    const user = await userService.findOne({ email: userToken.email } as IUser);
+    const user = await userService.findOne({ email: userToken.email } as IUserDocument);
     if (!user)
       return next(ErrorHandler.notFound("email",Messages.USER.NOT_FOUND));
 
@@ -83,9 +80,7 @@ class AuthController {
 
     const data = new AuthDto(user,role);
 
-    // const address = await companyAddressService.findOne({company:data.role.company_id});
-
-    const address = true;
+    const address = true; // other checks flags
 
     if(!address)
         data.has_company_address = false
@@ -110,7 +105,7 @@ forgot = async (req: Request, res: Response, next: NextFunction): Promise<void> 
   await otpService.removeOtp(userId);
   await otpService.storeOtp(userId, otp, type);
 
-  await mailService.sendMail({type:'forgotPassword',name,to:email,code:otp.toString()});
+  await mailService.sendMail({type:'forgotPassword',name,to:email!,code:otp.toString()});
 
   res.json({ success: true, message: 'Email has been sent to your email address' });
 };
@@ -140,7 +135,6 @@ reset = async (req: Request, res: Response, next: NextFunction): Promise<any> =>
     return next(ErrorHandler.badRequest("otp",'OTP has been Expired'));
   }
 
-//   return next(ErrorHandler.badRequest("🔒 Oops! Looks like you're trying to outsmart our email verification system! Nice try, clever one! 😏 But guess what? We're onto you! If you're truly the genius you seem to be, drop us a message or an email, and let's chat: 📧 socialcodia@gmail.com or 📱 9867503256. We appreciate the wit, so show us what you've got! 😉✨"))
   const  modifiedCount  = await userService.update(userId, {password});
 
   await mailService.sendMail({type:'resetPassword',name:user.name,to:email});
@@ -179,22 +173,19 @@ verify = async (req: Request, res: Response, next: NextFunction): Promise<any> =
     return next(ErrorHandler.badRequest('OTP has been Expired'));
   }
 
+  user.is_email_verified = true;
+  const data = await user.save();
 
-  return next(ErrorHandler.badRequest("otp", "🙈 Oopsie! This feature is as private as a ninja in stealth mode! 🕵️‍♂️ But hey, if you're feeling adventurous and want to give it a go, shoot us an email at socialcodia@gmail.com or drop a secret message at 📱 9867503256. We might just let you in on the undercover fun! 😎🔒"));
-
-  // user.is_email_verified = true;
-  // const data = await user.save();
-
-  // return data
-  //   ? res.json({ success: true, message: 'Email has been varified' })
-  //   : next(ErrorHandler.serverError("email",'Failed to verify your email'));
+  return data
+    ? res.json({ success: true, message: 'Email has been varified' })
+    : next(ErrorHandler.serverError("email",'Failed to verify your email'));
 };
 
 // logout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 //   const { refreshToken } = req.cookies;
 //   const { _id } = req.user;
 
-//   const response = await this.tokenService.removeRefreshToken(_id, refreshToken);
+//   const response = await tokenService.removeRefreshToken(_id, refreshToken);
 
 //   res.clearCookie('refreshToken');
 //   res.clearCookie('accessToken');
@@ -225,22 +216,17 @@ google = async (req: Request, res: Response, next: NextFunction): Promise<void> 
       let user = await userService.findOne({ email });
 
       if (!user) {
-        user = await userService.create({ name, email, image, is_email_verified: true } as IUser);
+        user = await userService.create({ name, email, image, is_email_verified: true } as IUserDocument);
       }
 
       const role = await roleService.findOneRelative({user:user._id});
 
       const data = new AuthDto(user,role);
 
-      const address = await companyAddressService.findOne({company:data.role.company_id});
-
-      const details = await companyDetailService.findOne({company:data.role.company_id});
+      const address = true; // other checks flags
 
       if(!address)
           data.has_company_address = false
-
-      if(!details)
-        data.has_company_document = false
 
       res.json({ success: true, message: Messages.AUTH.AUTH_SUCCESS, data });
 
@@ -274,7 +260,7 @@ facebook = async (req: Request, res: Response, next: NextFunction): Promise<void
     let user = await userService.findOne({ email });
 
     if (!user) {
-      user = await userService.create({ name, email, is_email_verified: true } as IUser);
+      user = await userService.create({ name, email, is_email_verified: true } as IUserDocument);
     }
 
     const role = await roleService.findOneRelative({ user: user._id });
