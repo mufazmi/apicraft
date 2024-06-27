@@ -27,6 +27,7 @@
     "mails/mail-template.ts"
   ],
   "initialFiles": [
+    "configs/init.ts",
     "configs/db-config.ts",
     "configs/mail-config.ts",
     "middlewares/async-middleware.ts",
