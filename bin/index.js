@@ -36,11 +36,11 @@ const generateFiles = (moduleName) => {
     Object.entries(templates.createTemplates).forEach(([fileType, templateFile]) => {
         const folder = templates.folders[fileType];
         const fileName = `${moduleNameLowerCase}-${fileType}.ts`;
-        const filePath = path.join('src', folder, fileName);
+        const filePath = path.join(process.cwd(), 'src', folder, fileName);
         const templatePath = path.join(__dirname, '..', 'templates', templateFile);
 
         const content = generateContent(templatePath, moduleName, moduleNameLowerCase, pluralModuleName);
-        fs.mkdirSync(path.join('src', folder), { recursive: true });
+        fs.mkdirSync(path.join(process.cwd(), 'src', folder), { recursive: true });
         createFile(filePath, content);
     });
 };
@@ -49,7 +49,7 @@ const createInitialFiles = () => {
     templates.initialFiles.concat(templates.initialAuthFiles).forEach((template) => {
         const dest = template === 'app.ts' ? template : path.join('src', template);
         const templatePath = path.join(__dirname, '..', 'templates', template);
-        const destPath = path.join(__dirname, '..', dest);
+        const destPath = path.join(process.cwd(), dest);
         const content = fs.readFileSync(templatePath, 'utf8');
         
         fs.mkdirSync(path.dirname(destPath), { recursive: true });
@@ -96,7 +96,7 @@ const installDependencies = () => {
 
 const initProject = () => {
     Object.values(templates.folders).forEach(folder => {
-        const folderPath = path.join('src', folder);
+        const folderPath = path.join(process.cwd(), 'src', folder);
         fs.mkdirSync(folderPath, { recursive: true });
         console.log(`Created folder ${folderPath}`);
     });
