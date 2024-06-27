@@ -1,3 +1,5 @@
+  <img src="https://raw.githubusercontent.com/mufazmi/apicraft/master/apicraft.png" style="min-width: 100%;" alt="Appreciation Letter - Drexel University">
+
 # API Craft CLI Tool
 
 API Craft CLI Tool is a command-line utility designed to streamline the setup of Node.js API projects, ensuring a well-structured and organized codebase. It automates the creation of essential files and folders, enhances code readability, and improves development productivity.
