@@ -120,6 +120,58 @@ const initProject = () => {
     installDependencies();
 };
 
+// Create .env and .env.prod files with environment configuration
+const createEnvFiles = () => {
+    const envContent = Object.entries(envConfig.env)
+        .map(([key, value]) => `${key}=${value}`)
+        .join('\n');
+    
+    createFile(path.join(process.cwd(), '.env'), envContent);
+    createFile(path.join(process.cwd(), '.env.prod'), envContent);
+};
+
+// Update package.json with scripts and dependencies
+const updatePackageJson = () => {
+    const packageJsonPath = path.join(process.cwd(), 'package.json');
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+
+    packageJson.scripts = {
+        ...packageJson.scripts,
+        ...dependencies.scripts
+    };
+
+    packageJson.devDependencies = {
+        ...packageJson.devDependencies,
+        ...dependencies.devDependencies
+    };
+
+    packageJson.dependencies = {
+        ...packageJson.dependencies,
+        ...dependencies.dependencies
+    };
+
+    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+    console.log('Updated package.json with required scripts and dependencies.');
+};
+
+// Install dependencies using npm
+const installDependencies = () => {
+    execSync('npm install', { stdio: 'inherit' });
+    console.log('Installed dependencies.');
+};
+
+// Display help information
+const displayHelp = () => {
+    console.log(`
+Usage: apicraft <command>
+
+Commands:
+  init                          Initialize a new project
+  create <module-name>          Create a new module with controllers, services, and routes
+  help                          Display help information
+`);
+};
+
 // Main function to handle commands
 const main = () => {
     const args = process.argv.slice(2);
@@ -142,8 +194,12 @@ const main = () => {
             const moduleName = args[1];
             generateFiles(moduleName);
             break;
+        case 'help':
+            displayHelp();
+            break;
         default:
             console.error(`Unknown command: ${command}`);
+            displayHelp();
             process.exit(1);
     }
 };
