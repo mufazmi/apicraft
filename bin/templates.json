@@ -1,0 +1,54 @@
+{
+  "createTemplates": {
+    "service": "services/service.ts",
+    "validation": "validations/validation.ts",
+    "route": "routes/route.ts",
+    "controller": "controllers/controller.ts",
+    "dto": "dtos/dto.ts",
+    "model": "models/model.ts"
+  },
+  "initialAuthFiles": [
+    "controllers/auth-controller.ts",
+    "models/user-model.ts",
+    "models/role-model.ts",
+    "models/company-model.ts",
+    "services/role-service.ts",
+    "services/mail-service.ts",
+    "services/otp-service.ts",
+    "services/token-service.ts",
+    "services/user-service.ts",
+    "dtos/auth-dto.ts",
+    "dtos/role-dto.ts",
+    "dtos/user-dto.ts",
+    "validations/auth-validation.ts",
+    "utils/constants.ts",
+    "interfaces/request-interface.ts",
+    "interfaces/user-interface.ts",
+    "mails/mail-template.ts"
+  ],
+  "initialFiles": [
+    "configs/db-config.ts",
+    "configs/mail-config.ts",
+    "middlewares/async-middleware.ts",
+    "middlewares/auth-middleware.ts",
+    "middlewares/error-middleware.ts",
+    "app.ts",
+    "routes/index.ts",
+    "utils/error-handler.ts",
+    "utils/messages.ts",
+    "utils/response.ts",
+    "utils/joi-validation.ts"
+  ],
+  "folders": {
+    "service": "services",
+    "validation": "validations",
+    "route": "routes",
+    "controller": "controllers",
+    "dto": "dtos",
+    "model": "models",
+    "configs": "configs",
+    "middlewares": "middlewares",
+    "interfaces": "interfaces",
+    "templates": "templates"
+  }
+}

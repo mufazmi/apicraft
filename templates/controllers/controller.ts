@@ -1,11 +1,11 @@
 import { Response, NextFunction } from "express";
-import { IBase } from "../models/base-model";
-import baseValidation from "../validations/base-validation";
+import { IBase } from "../models/base-kebab-model";
+import baseValidation from "../validations/base-kebab-validation";
 import ErrorHandler from "../utils/error-handler";
 import responseSuccess from "../utils/response";
 import { AuthRequest } from "../interfaces/request-interface";
-import baseService from "../services/base-service";
-import BaseDto from "../dtos/base-dto";
+import baseService from "../services/base-kebab-service";
+import BaseDto from "../dtos/base-kebab-dto";
 import { FilterQuery } from "mongoose";
 import { toObjectId } from "../utils/joi-validation";
 

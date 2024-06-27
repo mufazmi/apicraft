@@ -1,5 +1,5 @@
 import { FilterQuery } from "mongoose";
-import { BaseName, IBaseName } from "../models/base-model";
+import { BaseName, IBaseName } from "../models/base-kebab-model";
 
 class BaseNameService {
 
