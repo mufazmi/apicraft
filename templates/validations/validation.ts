@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-class ModelNameValidation {
+class BaseValidation {
   create = Joi.object({
     name: Joi.string().min(2).max(50).required(),
   });
@@ -10,4 +10,4 @@ class ModelNameValidation {
   });
 }
 
-export default new ModelNameValidation();
+export default new BaseValidation();
