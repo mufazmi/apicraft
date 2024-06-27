@@ -12,6 +12,7 @@
     "models/user-model.ts",
     "models/role-model.ts",
     "models/company-model.ts",
+    "models/otp-model.ts",
     "services/role-service.ts",
     "services/mail-service.ts",
     "services/otp-service.ts",
