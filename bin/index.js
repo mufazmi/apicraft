@@ -26,14 +26,43 @@ const FOLDERS = {
     'configs': 'configs',
     'middlewares': 'middlewares',
     'interfaces': 'interfaces',
+    'templates': 'templates',
 };
+
+const INITIAL_AUTH_FILES = [
+    { template: 'controllers/auth-controller.ts', dest: 'src/controllers/auth-controller.ts' },
+    { template: 'models/user-model.ts', dest: 'src/models/user-model.ts' },
+    { template: 'models/role-model.ts', dest: 'src/models/role-model.ts' },
+    { template: 'models/company-model.ts', dest: 'src/models/company-model.ts' },
+    { template: 'services/role-service.ts', dest: 'src/services/role-service.ts' },
+    { template: 'services/mail-service.ts', dest: 'src/services/mail-service.ts' },
+    { template: 'services/otp-service.ts', dest: 'src/services/otp-service.ts' },
+    { template: 'services/token-service.ts', dest: 'src/services/token-service.ts' },
+    { template: 'services/user-service.ts', dest: 'src/services/user-service.ts' },
+    { template: 'dtos/auth-dto.ts', dest: 'src/dtos/auth-dto.ts' },
+    { template: 'dtos/role-dto.ts', dest: 'src/dtos/role-dto.ts' },
+    { template: 'dtos/user-dto.ts', dest: 'src/dtos/user-dto.ts' },
+    { template: 'validations/auth-validation.ts', dest: 'src/validations/auth-validation.ts' },
+    { template: 'utils/constants.ts', dest: 'src/utils/constants.ts' },
+    { template: 'interfaces/request-interface.ts', dest: 'src/interfaces/request-interface.ts' },
+    { template: 'interfaces/user-interface.ts', dest: 'src/interfaces/user-interface.ts' },
+    { template: 'mails/mail-template.ts', dest: 'src/templates/mail-template.ts' },
+];
 
 // Initial files to be created on 'init'
 const INITIAL_FILES = [
     { template: 'configs/db-config.ts', dest: 'src/configs/db-config.ts' },
     { template: 'configs/mail-config.ts', dest: 'src/configs/mail-config.ts' },
-    { template: 'interfaces/request-interface.ts', dest: 'src/interfaces/request-interface.ts' },
+    { template: 'middlewares/async-middleware.ts', dest: 'src/middlewares/async-middleware.ts' },
+    { template: 'middlewares/auth-middleware.ts', dest: 'src/middlewares/auth-middleware.ts' },
+    { template: 'middlewares/error-middleware.ts', dest: 'src/middlewares/error-middleware.ts' },
     { template: 'app.ts', dest: 'app.ts' },
+    { template: 'routes/index.ts', dest: 'src/routes/index.ts' },
+    { template: 'utils/error-handler.ts', dest: 'src/utils/error-handler.ts' },
+    { template: 'utils/messages.ts', dest: 'src/utils/messages.ts' },
+    { template: 'utils/response.ts', dest: 'src/utils/response.ts' },
+    { template: 'utils/joi-validation.ts', dest: 'src/utils/joi-validation.ts' },
+    ...INITIAL_AUTH_FILES
 ];
 
 function createFile(fileName, content) {
@@ -56,9 +85,7 @@ function generateFiles(moduleName) {
         // Replace placeholders in the template content
         content = content.replace(/Base/g, modelName);
         content = content.replace(/base/g, moduleNameLowerCase);
-        // content = content.replace(/ModelName/g, modelName);
-        // content = content.replace(/modelNameSchema/g, `${moduleName}Schema`);
-        // content = content.replace(/modelNameModel/g, `model<${modelName}>('${modelName}', ${moduleName}Schema, '${pluralModuleName}');`);
+        // content = content.replace(/ModelName/g, modelName);Z'${modelName}', ${moduleName}Schema, '${pluralModuleName}');`);
         content = content.replace(/collectionName/g, `${pluralModuleName}`);
 
         // Ensure the folder exists
