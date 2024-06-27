@@ -4,7 +4,6 @@ const am = require('../middlewares/async-middleware');
 
 const router = express.Router();
 
-
 router.post('/',am(baseController.create))
 router.get('/',am(baseController.findAll))
 router.get('/:id',am(baseController.findOne))
