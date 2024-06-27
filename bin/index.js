@@ -47,7 +47,7 @@ const generateFiles = (moduleName) => {
 
 const createInitialFiles = () => {
     templates.initialFiles.concat(templates.initialAuthFiles).forEach((template) => {
-        const dest = template === 'app.ts' ? template : path.join('src', template);
+        const dest = template === 'app.ts' ? path.join('src', template) : path.join('src', template);
         const templatePath = path.join(__dirname, '..', 'templates', template);
         const destPath = path.join(process.cwd(), dest);
         const content = fs.readFileSync(templatePath, 'utf8');
@@ -102,9 +102,9 @@ const initProject = () => {
     });
 
     createInitialFiles();
-    createEnvFiles();
-    updatePackageJson();
-    installDependencies();
+    // createEnvFiles();
+    // updatePackageJson();
+    // installDependencies();
 };
 
 const main = () => {

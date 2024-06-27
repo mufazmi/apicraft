@@ -1,18 +1,18 @@
 import { FilterQuery } from "mongoose";
-import { BaseName, IBaseName } from "../models/base-kebab-model";
+import { Base, IBase } from "../models/base-kebab-model";
 
-class BaseNameService {
+class BaseService {
 
-    create = async (data: IBaseName) => await BaseName.create(data);
+    create = async (data: IBase) => await Base.create(data);
 
-    findOne = async (filter: any) => await BaseName.findOne(filter);
+    findOne = async (filter: any) => await Base.findOne(filter);
 
-    findAll = async (filter: any) => await BaseName.find(filter);
+    findAll = async (filter: any) => await Base.find(filter);
 
-    update = async (filter: any, data: any) => await BaseName.findOneAndUpdate(filter, data, { new: true });
+    update = async (filter: any, data: any) => await Base.findOneAndUpdate(filter, data, { new: true });
 
-    destroy = async (filter: any) => await BaseName.deleteMany(filter);
+    destroy = async (filter: any) => await Base.deleteMany(filter);
 }
 
-export default new BaseNameService;
+export default new BaseService;
 
