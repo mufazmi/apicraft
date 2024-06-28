@@ -28,6 +28,9 @@ npm install -g apicraft
 
 ## Usage
 
+  <img src="https://raw.githubusercontent.com/mufazmi/apicraft/master/apicraft.gif" style="min-width: 100%;" alt="Appreciation Letter - Drexel University">
+
+
 ### Initializing a New Project
 
 To initialize a new project with API Craft:
