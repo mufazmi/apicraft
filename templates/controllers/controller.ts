@@ -13,7 +13,7 @@ class BaseController {
 
   create = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const { user } = req;
-    const companyId = toObjectId(user.role.company_id!.toString());
+    const companyId = toObjectId(user.role.company!.toString());
 
     const body = await baseValidation.create.validateAsync(req.body);
 
@@ -30,7 +30,7 @@ class BaseController {
   findOne = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const { user } = req;
-    const companyId = toObjectId(user.role.company_id!.toString());
+    const companyId = toObjectId(user.role.company!.toString());
     const filter: FilterQuery<IBase> = { _id: toObjectId(id), company: companyId };
     const data: IBase | null = await baseService.findOne(filter);
     return data ? responseSuccess({ res: res, message: "Base Found", data: new BaseDto(data) }) : next(ErrorHandler.notFound("No Base Found"));
@@ -38,7 +38,7 @@ class BaseController {
 
   findAll = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const { user, query } = req
-    const companyId = toObjectId(user.role.company_id!.toString());
+    const companyId = toObjectId(user.role.company!.toString());
 
     const filter: FilterQuery<IBase> = { company: companyId };
 
