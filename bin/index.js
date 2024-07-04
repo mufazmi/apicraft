@@ -68,7 +68,7 @@ const updateRoutesFile = (moduleName) => {
     const routesFilePath = path.join(process.cwd(), 'src', 'routes', 'index.ts');
     const moduleNameCamelCase = moduleName.replace(/-([a-z])/g, (g) => g[1].toUpperCase()); // Convert hyphenated name to camelCase
     const routeImport = `import ${moduleNameCamelCase}Route from './${moduleName}-route';`;
-    const routeUse = `router.use('/${moduleName}', ${moduleNameCamelCase}Route);`;
+    const routeUse = `router.use('/${moduleName}', auth, ${moduleNameCamelCase}Route);`;
 
     try {
         let routesFileContent = fs.readFileSync(routesFilePath, 'utf8');
