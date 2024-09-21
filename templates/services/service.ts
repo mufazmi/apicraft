@@ -1,18 +1,30 @@
 import { FilterQuery } from "mongoose";
-import BaseModel, { IBase } from "../models/base-kebab-model";
+import BaseModel, { IBase, IBaseDocument } from "../models/base-kebab-model";
 
 class BaseService {
+  
+  create = async (data: IBase): Promise<IBaseDocument> => {
+    return await BaseModel.create(data);
+  };
 
-    create = async (data: IBase) => await BaseModel.create(data);
+  findOne = async (filter: FilterQuery<IBase>): Promise<IBaseDocument | null> => {
+    return await BaseModel.findOne(filter);
+  };
 
-    findOne = async (filter: any) => await BaseModel.findOne(filter);
+  findAll = async (filter: FilterQuery<IBase>): Promise<IBaseDocument[]> => {
+    return await BaseModel.find(filter);
+  };
 
-    findAll = async (filter: any) => await BaseModel.find(filter);
+  update = async (
+    filter: FilterQuery<IBase>, 
+    data: Partial<IBase>
+  ): Promise<IBaseDocument | null> => {
+    return await BaseModel.findOneAndUpdate(filter, data, { new: true });
+  };
 
-    update = async (filter: any, data: any) => await BaseModel.findOneAndUpdate(filter, data, { new: true });
-
-    destroy = async (filter: any) => await BaseModel.deleteMany(filter);
+  destroy = async (filter: FilterQuery<IBase>): Promise<{ deletedCount?: number }> => {
+    return await BaseModel.deleteMany(filter);
+  };
 }
 
-export default new BaseService;
-
+export default new BaseService();
