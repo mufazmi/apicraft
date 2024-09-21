@@ -13,39 +13,47 @@ class BaseController {
 
   create = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const { user } = req;
-    const companyId = toObjectId(user.role.company!.toString());
+    const companyId = toObjectId(user.role.company!.id!.toString());
 
     const body = await baseValidation.create.validateAsync(req.body);
-
-    const payload = {
-      ...body
-    }
+    const payload = { company: companyId, ...body };
 
     const data: IBase = await baseService.create(payload);
 
-    return responseSuccess({ res: res, message: "Base Created Success", data: new BaseDto(data) });
-
+    return responseSuccess({
+      res,
+      message: "Base created successfully",
+      data: new BaseDto(data),
+    });
   };
 
   findOne = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const { user } = req;
-    const companyId = toObjectId(user.role.company!.toString());
+    const companyId = toObjectId(user.role.company!.id!.toString());
+
     const filter: FilterQuery<IBase> = { _id: toObjectId(id), company: companyId };
     const data: IBase | null = await baseService.findOne(filter);
-    return data ? responseSuccess({ res: res, message: "Base Found", data: new BaseDto(data) }) : next(ErrorHandler.notFound("No Base Found"));
+
+    if (!data) {
+      return next(ErrorHandler.notFound("No Base found"));
+    }
+
+    return responseSuccess({
+      res,
+      message: "Base found",
+      data: new BaseDto(data),
+    });
   };
 
   findAll = async (req: AuthRequest, res: Response, next: NextFunction) => {
-    const { user, query } = req
-    const companyId = toObjectId(user.role.company!.toString());
+    const { user, query } = req;
+    const companyId = toObjectId(user.role.company!.id!.toString());
 
     const filter: FilterQuery<IBase> = { company: companyId };
 
     if (query.name) {
-      filter["name"] = {
-        $regex: new RegExp(query.name as string, 'i')
-      }
+      filter["name"] = { $regex: new RegExp(query.name as string, "i") };
     }
 
     // if (query.base) {
@@ -54,30 +62,47 @@ class BaseController {
 
     const data: IBase[] = await baseService.findAll(filter);
 
-    return data ? responseSuccess({ res: res, message: "Base Found", data: data.map((x) => new BaseDto(x)) }) : next(ErrorHandler.notFound("No Base Found"));
-  };
+    if (!data || data.length === 0) {
+      return next(ErrorHandler.notFound("No Base found"));
+    }
 
+    return responseSuccess({
+      res,
+      message: "Base(s) found",
+      data: data.map((base) => new BaseDto(base)),
+    });
+  };
 
   update = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const { user } = req;
+    const companyId = toObjectId(user.role.company!.id!.toString());
 
     const body = await baseValidation.update.validateAsync(req.body);
 
-    const filter = {};
+    const filter: FilterQuery<IBase> = { _id: toObjectId(id), company: companyId };
     const data: IBase | null = await baseService.update(filter, body);
 
-    return data ? responseSuccess({ res: res, message: "Base Updated" }) : next(ErrorHandler.serverError("Base Update Failed"));
+    if (!data) {
+      return next(ErrorHandler.badRequest("Base update failed"));
+    }
+
+    return responseSuccess({ res, message: "Base updated successfully" });
   };
 
   destroy = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const { user } = req;
-    const body = await baseValidation.update.validateAsync(req.body);
-    const filter = {};
+    const companyId = toObjectId(user.role.company!.id!.toString());
+
+    const filter: FilterQuery<IBase> = { _id: toObjectId(id), company: companyId };
     const data = await baseService.destroy(filter);
 
-    return data ? responseSuccess({ res: res, message: "Base Updated" }) : next(ErrorHandler.serverError("Base Update Failed"));
+    if (!data) {
+      return next(ErrorHandler.badRequest("Base deletion failed"));
+    }
+
+    return responseSuccess({ res, message: "Base deleted successfully" });
   };
 }
 
